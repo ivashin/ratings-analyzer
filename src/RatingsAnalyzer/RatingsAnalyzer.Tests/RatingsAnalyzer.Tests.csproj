@@ -12,7 +12,7 @@
     <AssemblyName>RatingsAnalyzer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-	<OutputDir Condition=" '$(OutputDir)' == '' ">$(SolutionDir)..\..\bin\</OutputDir>
+    <OutputDir Condition=" '$(OutputDir)' == '' ">$(SolutionDir)..\..\bin\</OutputDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -68,10 +68,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawler\Metacritic\MetacriticCrawlerTests.cs" />
+    <Compile Include="Crawler\Metacritic\MetacriticEntryParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RatingsAnalyzer\RatingsAnalyzer.csproj">
+      <Project>{d4d10c16-80a3-4c6a-98b6-eb7676c42d1d}</Project>
+      <Name>RatingsAnalyzer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Crawler\Metacritic\MetacriticMovieEntry.html" />
+    <EmbeddedResource Include="Crawler\Metacritic\MetacriticMoviesList.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
