@@ -12,6 +12,7 @@
     <AssemblyName>RatingsAnalyzer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+	<OutputDir Condition=" '$(OutputDir)' == '' ">$(SolutionDir)..\..\bin\</OutputDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -78,7 +79,7 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <Exec Command="xcopy.exe $(TargetDir)*.* $(OutputDir)" />
+    <Exec Command="xcopy.exe /Y $(TargetDir)*.* $(OutputDir)" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
