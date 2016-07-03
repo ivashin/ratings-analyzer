@@ -27,7 +27,7 @@ namespace RatingsAnalyzer.Tests.Crawler.Metacritic
             var downloaderMock = new Mock<IDownloader>();
             downloaderMock.Setup(x => x.Get(It.IsAny<string>())).Returns(html);
 
-            var parser = new MetacriticEntryParser(() => downloaderMock.Object, ItemUri);
+            var parser = new MetacriticEntryParser(downloaderMock.Object, ItemUri);
             _result = parser.Parse();
         }
 

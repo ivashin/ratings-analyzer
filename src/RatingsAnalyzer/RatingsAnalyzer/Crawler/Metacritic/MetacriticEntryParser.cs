@@ -17,23 +17,23 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Func<IDownloader> _downloaderFactory;
-        private readonly string _uri;
-
-        public MetacriticEntryParser(Func<IDownloader> downloaderFactory, string uri)
+        private readonly IDownloader _downloader;
+        
+        public MetacriticEntryParser(IDownloader downloader, string uri)
         {
-            _downloaderFactory = downloaderFactory;
-            _uri = uri;
+            _downloader = downloader;
+            Uri = uri;
         }
+
+        public string Uri { get; private set; }
 
         public MovieData Parse()
         {
-            Logger.Debug("Parsing {0}", _uri);
-            var downloader = _downloaderFactory();
-            var page = downloader.Get(_uri);
+            Logger.Debug("Parsing {0}", Uri);
+            var html = _downloader.Get(Uri);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(page);
+            doc.LoadHtml(html);
             var rootNode = doc.DocumentNode;
 
             var data = new MovieData();
@@ -42,7 +42,7 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
             var rating = new MovieRating();
             rating.Source = Model.Source.Metacritic;
-            rating.Uri = _uri;
+            rating.Uri = Uri;
 
             rating.CriticsRating = rootNode.GetDouble(CriticsRatingXPath) / 10.0;
             rating.CriticsRatingsCount = rootNode.GetInt(CriticsRatingsCountXPath);
