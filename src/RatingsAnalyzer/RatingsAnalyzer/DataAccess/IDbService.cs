@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using RatingsAnalyzer.Model;
 
 namespace RatingsAnalyzer.DataAccess
@@ -7,6 +8,6 @@ namespace RatingsAnalyzer.DataAccess
     {
         void SaveEntry(MovieData entry);
 
-        IQueryable<MovieData> Query();
+        T Query<T>(Func<IQueryable<MovieData>, T> query);
     }
 }

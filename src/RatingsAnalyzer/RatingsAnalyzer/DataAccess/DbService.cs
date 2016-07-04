@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RatingsAnalyzer.Model;
 
 namespace RatingsAnalyzer.DataAccess
@@ -17,14 +18,37 @@ namespace RatingsAnalyzer.DataAccess
         {
             using (var db = _contextFactory())
             {
-                db.Movies.Add(entry);
+                var existingEntry = db.Movies.Include(m => m.MovieRatings).SingleOrDefault(m => m.Title == entry.Title);
+                if (existingEntry != null) 
+                {
+                    // Try to update existing
+                    foreach (var rating in entry.MovieRatings)
+                    {
+                        // Replace existing rating entries
+                        var existingRating = existingEntry.MovieRatings.SingleOrDefault(mr => mr.Uri == rating.Uri);
+                        if (existingRating != null)
+                        {
+                            existingEntry.MovieRatings.Remove(existingRating);
+                            db.MovieRatings.Remove(existingRating);
+                        }
+                        existingEntry.MovieRatings.Add(rating);
+                    }
+                    db.Movies.Update(existingEntry);
+                }
+                else
+                {
+                    db.Movies.Add(entry);
+                }
                 db.SaveChanges();
             }
         }
 
-        public IQueryable<MovieData> Query()
+        public T Query<T>(Func<IQueryable<MovieData>, T> query)
         {
-            return null; //_context.Movies;
+            using (var db = _contextFactory())
+            {
+                return query(db.Movies);
+            }
         }
     }
 }
