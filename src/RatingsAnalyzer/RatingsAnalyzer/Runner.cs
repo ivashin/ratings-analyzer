@@ -3,6 +3,7 @@ using Autofac;
 using CommandLine;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using RatingsAnalyzer.Analytics;
 using RatingsAnalyzer.Crawler;
 using RatingsAnalyzer.Crawler.Metacritic;
 using RatingsAnalyzer.DataAccess;
@@ -69,6 +70,7 @@ namespace RatingsAnalyzer
             builder.RegisterType<WebPageDownloader>().As<IPageDownloader>();
             builder.RegisterType<DbService>().As<IDbService>();
             builder.RegisterType<MovieRatingsContext>().AsSelf().As<DbContext>();
+            builder.RegisterType<RatingsAnalytics>();
             return builder.Build();
         }
     }

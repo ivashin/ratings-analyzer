@@ -136,6 +136,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analytics\RatingsAnalytics.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="Crawler\CrawlerEngine.cs" />
     <Compile Include="Crawler\HtmlParserExtensions.cs" />
@@ -171,8 +172,8 @@
   <Target Name="AfterBuild">
     <CreateItem Include="$(TargetDir)**\*.*">
       <Output TaskParameter="Include" ItemName="FilesToCopy" />
-    </CreateItem>   
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(OutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />    
+    </CreateItem>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(OutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
