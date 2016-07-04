@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
+using NLog;
 
 namespace RatingsAnalyzer.Crawler.Metacritic
 {
@@ -17,6 +18,8 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         private const string HrefAttribute = "href";
         private const string ClassAttribute = "class";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDownloader _downloader;
         private readonly Func<string, IEntryParser> _parserFactory;
@@ -34,6 +37,7 @@ namespace RatingsAnalyzer.Crawler.Metacritic
             var uri = EntryPointUri;
             while (uri != null)
             {
+                Logger.Info("Processing page: {0}", uri);
                 var html = _downloader.Get(uri);
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
@@ -41,6 +45,7 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
                 // Lazily iterate over all movie entries on the page
                 var moviesList = rootNode.SelectNodes(MovieEntryXPath);
+                Logger.Debug("Found {0} entries in {1}", moviesList.Count, uri);
                 foreach (var entry in moviesList)
                 {
                     uriBuilder.Path = entry.Attributes[HrefAttribute].Value;
@@ -53,30 +58,25 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         private string GetNextPageUri(HtmlNode rootNode)
         {
-            var uriBuilder = new UriBuilder(BaseUri);
+            // Iterate over pages for a single letter. If final page - then iterate over letters.
+            return GetNextPageUri(rootNode, NumberPagesXPath,
+                                  page => page.Attributes[ClassAttribute].Value.Contains("active_page"))
+                ?? GetNextPageUri(rootNode, LetterPagesXPath,
+                                  page => page.SelectSingleNode(ActiveLetterPageXPath) != null);
+        }
 
-            // Iterate over pages for a single letter
-            var numberPages = rootNode.SelectNodes(NumberPagesXPath);
-            var activePage = numberPages.First(page => page.Attributes[ClassAttribute].Value.Contains("active_page"));
+        private string GetNextPageUri(HtmlNode rootNode, string xpath, Func<HtmlNode, bool> activePageSelector)
+        {
+            var numberPages = rootNode.SelectNodes(xpath);
+            var activePage = numberPages.First(activePageSelector);
             var index = numberPages.IndexOf(activePage);
             if (index != numberPages.Count - 1)
             {
                 var nextPage = numberPages[index + 1];
+                var uriBuilder = new UriBuilder(BaseUri);
                 uriBuilder.Path = nextPage.SelectSingleNode("./a").Attributes[HrefAttribute].Value;
                 return uriBuilder.Uri.ToString();
             }
-
-            // If last page for a letter, then iterate over letters
-            var letterPages = rootNode.SelectNodes(LetterPagesXPath);
-            activePage = letterPages.First(page => page.SelectSingleNode(ActiveLetterPageXPath) != null);
-            index = letterPages.IndexOf(activePage);
-            if (index != letterPages.Count - 1)
-            {
-                var nextPage = letterPages[index + 1];
-                uriBuilder.Path = nextPage.SelectSingleNode("./a").Attributes[HrefAttribute].Value;
-                return uriBuilder.Uri.ToString();
-            }
-
             return null;
         }
     }

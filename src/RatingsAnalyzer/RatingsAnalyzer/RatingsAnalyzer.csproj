@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="Crawler\CrawlerEngine.cs" />
     <Compile Include="Crawler\HtmlParserExtensions.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Crawler\IDownloader.cs" />

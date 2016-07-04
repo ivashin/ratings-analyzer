@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawler\CrawlerEngineTests.cs" />
     <Compile Include="Crawler\Metacritic\MetacriticCrawlerTests.cs" />
     <Compile Include="Crawler\Metacritic\MetacriticEntryParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
