@@ -1,6 +1,9 @@
 ﻿﻿using System;
 using System.Linq;
-using NLog;
+﻿using System.Threading;
+﻿using NLog;
+﻿using RatingsAnalyzer.DataAccess;
+﻿using RatingsAnalyzer.Model;
 
 namespace RatingsAnalyzer.Crawler
 {
@@ -9,10 +12,12 @@ namespace RatingsAnalyzer.Crawler
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ICrawler _crawler;
+        private readonly IDbService _dbService;
 
-        public CrawlerEngine(ICrawler crawler)
+        public CrawlerEngine(ICrawler crawler, IDbService dbService)
         {
             _crawler = crawler;
+            _dbService = dbService;
         }
 
         public void GetData(int count)
@@ -31,6 +36,7 @@ namespace RatingsAnalyzer.Crawler
                 try
                 {
                     var data = entry.Parse();
+                    _dbService.SaveEntry(data);
                 }
                 catch (Exception e) // Single failed entry should not affect whole process
                 {
@@ -38,12 +44,11 @@ namespace RatingsAnalyzer.Crawler
                     Logger.Error(e, "Error while processing entry {0}.", entry.Uri);
                 }
 
-                // TODO: save to DB
-
                 processedEntries++;
                 if (processedEntries % 100 == 0)
                 {
-                    Logger.Info("Processed {0} entries.", processedEntries);
+                    Logger.Info("Processed {0} entries. 10 seconds pause", processedEntries);
+                    Thread.Sleep(TimeSpan.FromSeconds(10)); // Give their servers some rest :)
                 }
             }
 

@@ -51,8 +51,8 @@ namespace RatingsAnalyzer.Crawler.Metacritic
             var audienceRatingsCount = rootNode.GetText(AudienceRatingsCountXPath);
             rating.AudienceRatingsCount = Int32.Parse(audienceRatingsCount.Replace(" Ratings", ""), CultureInfo.InvariantCulture);
 
-            data.Ratings = new List<MovieRating>();
-            data.Ratings.Add(rating);
+            data.MovieRatings = new List<MovieRating>();
+            data.MovieRatings.Add(rating);
             return data;
         }
     }

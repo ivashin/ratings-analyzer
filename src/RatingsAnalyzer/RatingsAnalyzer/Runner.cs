@@ -1,9 +1,11 @@
 ﻿using System;
 using Autofac;
 using CommandLine;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using RatingsAnalyzer.Crawler;
 using RatingsAnalyzer.Crawler.Metacritic;
+using RatingsAnalyzer.DataAccess;
 using RatingsAnalyzer.Util;
 
 namespace RatingsAnalyzer
@@ -65,6 +67,8 @@ namespace RatingsAnalyzer
             builder.RegisterType<MetacriticCrawler>().As<ICrawler>();
             builder.RegisterType<MetacriticEntryParser>().As<IEntryParser>();
             builder.RegisterType<WebPageDownloader>().As<IPageDownloader>();
+            builder.RegisterType<DbService>().As<IDbService>();
+            builder.RegisterType<MovieRatingsContext>().AsSelf().As<DbContext>();
             return builder.Build();
         }
     }

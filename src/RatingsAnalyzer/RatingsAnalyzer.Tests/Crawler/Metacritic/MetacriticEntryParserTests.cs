@@ -40,43 +40,43 @@ namespace RatingsAnalyzer.Tests.Crawler.Metacritic
         [Fact]
         public void TestRatingParsing()
         {
-            Assert.Single(_result.Ratings);
-            Assert.NotNull(_result.Ratings[0]);
+            Assert.Single(_result.MovieRatings);
+            Assert.NotNull(_result.MovieRatings[0]);
         }
 
         [Fact]
         public void TestUri()
         {
-            Assert.Equal(ItemUri, _result.Ratings[0].Uri);
+            Assert.Equal(ItemUri, _result.MovieRatings[0].Uri);
         }
 
         public void TestSource()
         {
-            Assert.Equal(Source.Metacritic, _result.Ratings[0].Source);
+            Assert.Equal(Source.Metacritic, _result.MovieRatings[0].Source);
         }
 
         [Fact]
         public void TestCriticsRating()
         {
-            Assert.Equal(4.2, _result.Ratings[0].CriticsRating);
+            Assert.Equal(4.2, _result.MovieRatings[0].CriticsRating);
         }
 
         [Fact]
         public void TestCriticsRatingsCount()
         {
-            Assert.Equal(7, _result.Ratings[0].CriticsRatingsCount);
+            Assert.Equal(7, _result.MovieRatings[0].CriticsRatingsCount);
         }
 
         [Fact]
         public void TestAudienceRating()
         {
-            Assert.Equal(3.4, _result.Ratings[0].AudienceRating);
+            Assert.Equal(3.4, _result.MovieRatings[0].AudienceRating);
         }
 
         [Fact]
         public void TestAudienceRatingsCount()
         {
-            Assert.Equal(11, _result.Ratings[0].AudienceRatingsCount);
+            Assert.Equal(11, _result.MovieRatings[0].AudienceRatingsCount);
         }
     }
 }
