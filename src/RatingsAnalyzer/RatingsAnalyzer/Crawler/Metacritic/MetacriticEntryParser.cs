@@ -17,11 +17,11 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IDownloader _downloader;
+        private readonly IPageDownloader _pageDownloader;
         
-        public MetacriticEntryParser(IDownloader downloader, string uri)
+        public MetacriticEntryParser(IPageDownloader pageDownloader, string uri)
         {
-            _downloader = downloader;
+            _pageDownloader = pageDownloader;
             Uri = uri;
         }
 
@@ -30,7 +30,7 @@ namespace RatingsAnalyzer.Crawler.Metacritic
         public MovieData Parse()
         {
             Logger.Debug("Parsing {0}", Uri);
-            var html = _downloader.Get(Uri);
+            var html = _pageDownloader.Get(Uri);
 
             var doc = new HtmlDocument();
             doc.LoadHtml(html);

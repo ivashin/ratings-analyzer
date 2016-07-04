@@ -3,7 +3,7 @@ using NLog;
 
 namespace RatingsAnalyzer.Crawler
 {
-    class UriDownloader: IDownloader
+    class WebPageDownloader: IPageDownloader
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -12,7 +12,7 @@ namespace RatingsAnalyzer.Crawler
             Logger.Debug("Downloading {0}", uri);
 
             var webClient = new WebClient();
-            // TODO: set headers
+            webClient.Headers.Add("user-agent", "RatingsAnalyzer");
             return webClient.DownloadString(uri);
         }
     }

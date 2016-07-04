@@ -21,12 +21,12 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IDownloader _downloader;
+        private readonly IPageDownloader _pageDownloader;
         private readonly Func<string, IEntryParser> _parserFactory;
 
-        public MetacriticCrawler(IDownloader downloader, Func<string, IEntryParser> parserFactory)
+        public MetacriticCrawler(IPageDownloader pageDownloader, Func<string, IEntryParser> parserFactory)
         {
-            _downloader = downloader;
+            _pageDownloader = pageDownloader;
             _parserFactory = parserFactory;
         }
 
@@ -38,7 +38,7 @@ namespace RatingsAnalyzer.Crawler.Metacritic
             while (uri != null)
             {
                 Logger.Info("Processing page: {0}", uri);
-                var html = _downloader.Get(uri);
+                var html = _pageDownloader.Get(uri);
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
                 var rootNode = doc.DocumentNode;

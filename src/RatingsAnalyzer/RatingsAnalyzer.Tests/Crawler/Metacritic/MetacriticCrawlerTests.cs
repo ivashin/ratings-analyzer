@@ -13,11 +13,11 @@ namespace RatingsAnalyzer.Tests.Crawler.Metacritic
         private const string Page1ResourceName = "RatingsAnalyzer.Tests.Crawler.Metacritic.MetacriticMoviesList.html";
         private const string Page2ResourceName = "RatingsAnalyzer.Tests.Crawler.Metacritic.MetacriticMoviesList2.html";
 
-        private Mock<IDownloader> _downloaderMock;
+        private Mock<IPageDownloader> _downloaderMock;
 
         public MetacriticCrawlerTests()
         {
-            _downloaderMock = new Mock<IDownloader>();
+            _downloaderMock = new Mock<IPageDownloader>();
             _downloaderMock.Setup(x => x.Get(It.IsAny<string>())).Returns((string uri) => GetHtml(uri)).Verifiable();
         }
 

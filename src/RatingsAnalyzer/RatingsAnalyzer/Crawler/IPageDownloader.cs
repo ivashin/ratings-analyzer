@@ -1,6 +1,6 @@
 ﻿namespace RatingsAnalyzer.Crawler
 {
-    public interface IDownloader
+    public interface IPageDownloader
     {
         string Get(string uri);
     }

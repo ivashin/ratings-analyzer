@@ -72,6 +72,7 @@
     <Compile Include="Crawler\Metacritic\MetacriticCrawlerTests.cs" />
     <Compile Include="Crawler\Metacritic\MetacriticEntryParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\EnumExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
