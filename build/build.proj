@@ -39,22 +39,11 @@
   </Target>
   
   <Target Name="Test">
-    <Message Text="Running Unit Tests..."/>
-    
+    <Message Text="Running Unit Tests..."/>    
     <ItemGroup>
-        <TestAssemblies Include="$(TargetDir)\**\*.Tests.dll;$(TargetDir)\**\*.UnitTests.dll" />
+        <TestAssemblies Include="$(SolutionDir)\**\bin\Release\*.Tests.dll;$(SolutionDir)\**\bin\Release\*.UnitTests.dll" />
     </ItemGroup>
-
-    <xunit Assemblies="@(TestAssemblies)" />
-    
-    <CreateItem Include="
-        $(TargetDir)\**\*.pdb;
-        $(TargetDir)\**\*.Tests.dll;
-        $(TargetDir)\**\*.UnitTests.dll;
-        $(TargetDir)\**\xunit*.*">
-        <Output TaskParameter="Include" ItemName="FilesToDelete" />
-    </CreateItem>
-
-    <Delete Files="@(FilesToDelete)"/> 
+    <xunit Assemblies="@(TestAssemblies)" />	
   </Target>
+  
 </Project>

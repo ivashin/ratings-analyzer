@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using RatingsAnalyzer.Model;
@@ -12,6 +13,14 @@ namespace RatingsAnalyzer.DataAccess
         public DbService(Func<MovieRatingsContext> conextFactory)
         {
             _contextFactory = conextFactory;
+        }
+
+        public void EnsureDbCreated()
+        {
+            using (var db = _contextFactory())
+            {
+                db.Database.EnsureCreated();
+            }
         }
 
         public void SaveEntry(MovieData entry)
@@ -43,7 +52,15 @@ namespace RatingsAnalyzer.DataAccess
             }
         }
 
-        public T Query<T>(Func<IQueryable<MovieData>, T> query)
+        public List<T> QueryList<T>(Func<IQueryable<MovieData>, IEnumerable<T>> query)
+        {
+            using (var db = _contextFactory())
+            {
+                return query(db.Movies).ToList();
+            }
+        }
+
+        public T QueryScalar<T>(Func<IQueryable<MovieData>, T> query)
         {
             using (var db = _contextFactory())
             {

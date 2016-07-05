@@ -136,7 +136,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analytics\RatingsAnalytics.cs" />
+    <Compile Include="Analytics\AnalyticsEngine.cs" />
+    <Compile Include="Analytics\CsvEntry.cs" />
+    <Compile Include="Analytics\Queries.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="Crawler\CrawlerEngine.cs" />
     <Compile Include="Crawler\HtmlParserExtensions.cs" />

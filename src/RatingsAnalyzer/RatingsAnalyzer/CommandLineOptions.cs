@@ -25,7 +25,13 @@ namespace RatingsAnalyzer
 
     class AnalyzeOptions: CommonOptions
     {
-        
+        [Option('u', "underrated", HelpText = "Find underrated movies", DefaultValue = false, MutuallyExclusiveSet = "optionset")]
+        public bool Underrated { get; set; }
+
+        [Option('o', "overrated", HelpText = "Find overrated movies", DefaultValue = false, MutuallyExclusiveSet = "optionset")]
+        public bool Overrated { get; set; }
+        [Option('f', "file", HelpText = "CSV file to save results", Required = true)]
+        public string FileName { get; set; }
     }
 
     enum Command

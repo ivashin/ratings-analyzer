@@ -43,6 +43,8 @@ namespace RatingsAnalyzer
                 Logger.Info("Starting application");
                 _iocContainer = SetupIoCContainer();
 
+                _iocContainer.Resolve<IDbService>().EnsureDbCreated();
+
                 Logger.Info("Executing {0} command", command);
                 switch (command)
                 {
@@ -50,6 +52,19 @@ namespace RatingsAnalyzer
                         _iocContainer.Resolve<CrawlerEngine>().GetData(options.GetVerb.Results);
                         break;
                     case Command.Analyze:
+                        var analytics = _iocContainer.Resolve<AnalyticsEngine>();
+                        if (options.AnalyzeVerb.Underrated)
+                        {
+                            analytics.FindUnderratedMovies(options.AnalyzeVerb.Results, options.AnalyzeVerb.FileName);
+                        }
+                        else if (options.AnalyzeVerb.Overrated)
+                        {
+                            analytics.FindOverratedMovies(options.AnalyzeVerb.Results, options.AnalyzeVerb.FileName);
+                        }
+                        else
+                        {
+                            Logger.Error("Query not specified");
+                        }
                         break;
                 }
             }
@@ -70,7 +85,8 @@ namespace RatingsAnalyzer
             builder.RegisterType<WebPageDownloader>().As<IPageDownloader>();
             builder.RegisterType<DbService>().As<IDbService>();
             builder.RegisterType<MovieRatingsContext>().AsSelf().As<DbContext>();
-            builder.RegisterType<RatingsAnalytics>();
+            builder.RegisterType<Queries>().As<IQueries>();
+            builder.RegisterType<AnalyticsEngine>();
             return builder.Build();
         }
     }

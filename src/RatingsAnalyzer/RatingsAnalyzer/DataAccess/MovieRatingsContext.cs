@@ -6,17 +6,6 @@ namespace RatingsAnalyzer.DataAccess
 {
     public class MovieRatingsContext: DbContext
     {
-        private static bool _created = false;
-
-        public MovieRatingsContext()
-        {
-            if (!_created)
-            {
-                _created = true;
-                Database.EnsureCreated();
-            }
-        }
-
         public DbSet<MovieData> Movies { get; set; } 
         public DbSet<MovieRating> MovieRatings { get; set; }
 

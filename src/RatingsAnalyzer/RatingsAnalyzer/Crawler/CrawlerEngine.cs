@@ -3,7 +3,6 @@ using System.Linq;
 ﻿using System.Threading;
 ﻿using NLog;
 ﻿using RatingsAnalyzer.DataAccess;
-﻿using RatingsAnalyzer.Model;
 
 namespace RatingsAnalyzer.Crawler
 {
