@@ -12,10 +12,14 @@ namespace RatingsAnalyzer.Crawler
             return textNode.InnerText.Trim();
         }
 
-        public static double GetDouble(this HtmlNode node, string xpath)
+        public static double? GetDouble(this HtmlNode node, string xpath)
         {
             var textNode = node.SelectSingleNode(xpath);
-            return Double.Parse(textNode.InnerText.Trim(), CultureInfo.InvariantCulture);
+            double result;
+            return textNode != null &&
+                   Double.TryParse(textNode.InnerText.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture,out result)
+                ? result
+                : (double?) null;
         }
 
         public static int GetInt(this HtmlNode node, string xpath)

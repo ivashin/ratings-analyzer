@@ -32,8 +32,6 @@ namespace RatingsAnalyzer.Crawler.Metacritic
 
         public IEnumerable<IEntryParser> GetEntries()
         {
-            var uriBuilder = new UriBuilder(BaseUri);
-
             var uri = EntryPointUri;
             while (uri != null)
             {
@@ -48,8 +46,8 @@ namespace RatingsAnalyzer.Crawler.Metacritic
                 Logger.Debug("Found {0} entries in {1}", moviesList.Count, uri);
                 foreach (var entry in moviesList)
                 {
-                    uriBuilder.Path = entry.Attributes[HrefAttribute].Value;
-                    yield return _parserFactory(uriBuilder.Uri.ToString());
+                    var movieLink = entry.Attributes[HrefAttribute].Value;
+                    yield return _parserFactory(BaseUri + movieLink);
                 }
 
                 uri = GetNextPageUri(rootNode);
@@ -73,9 +71,8 @@ namespace RatingsAnalyzer.Crawler.Metacritic
             if (index != numberPages.Count - 1)
             {
                 var nextPage = numberPages[index + 1];
-                var uriBuilder = new UriBuilder(BaseUri);
-                uriBuilder.Path = nextPage.SelectSingleNode("./a").Attributes[HrefAttribute].Value;
-                return uriBuilder.Uri.ToString();
+                var nextPageLink = nextPage.SelectSingleNode("./a").Attributes[HrefAttribute].Value;
+                return BaseUri + nextPageLink;
             }
             return null;
         }

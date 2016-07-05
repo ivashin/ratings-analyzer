@@ -14,7 +14,7 @@ namespace RatingsAnalyzer.Analytics
         }
 
         public string Movie { get; set; }
-        public double CriticsRating { get; set; }
-        public double AudienceRating { get; set; }
+        public double? CriticsRating { get; set; }
+        public double? AudienceRating { get; set; }
     }
 }

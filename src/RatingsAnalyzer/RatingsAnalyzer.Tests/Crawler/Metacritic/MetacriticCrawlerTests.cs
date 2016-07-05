@@ -28,7 +28,7 @@ namespace RatingsAnalyzer.Tests.Crawler.Metacritic
                 case "http://www.metacritic.com/browse/movies/title/dvd":
                 case "http://www.metacritic.com/browse/movies/title/dvd/a":
                     return GetResourceString(Page1ResourceName);
-                case "http://www.metacritic.com/browse/movies/title/dvd%3Fpage=1":
+                case "http://www.metacritic.com/browse/movies/title/dvd?page=1":
                     return GetResourceString(Page2ResourceName);
                 default:
                     return null;
@@ -84,7 +84,7 @@ namespace RatingsAnalyzer.Tests.Crawler.Metacritic
             enumerator.MoveNext(); // Two entries on the first page
 
             enumerator.MoveNext(); // Next entry triggers download of the second page for letter
-            _downloaderMock.Verify(downloader => downloader.Get("http://www.metacritic.com/browse/movies/title/dvd%3Fpage=1"));
+            _downloaderMock.Verify(downloader => downloader.Get("http://www.metacritic.com/browse/movies/title/dvd?page=1"));
             enumerator.MoveNext(); // Two entries on the second page
 
             enumerator.MoveNext(); // Next entry triggers download for next letter

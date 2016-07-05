@@ -41,15 +41,21 @@ namespace RatingsAnalyzer.Crawler.Metacritic
             data.Title = rootNode.GetText(TitleXPath);
 
             var rating = new MovieRating();
-            rating.Source = Model.Source.Metacritic;
+            rating.Source = Source.Metacritic;
             rating.Uri = Uri;
 
             rating.CriticsRating = rootNode.GetDouble(CriticsRatingXPath) / 10.0;
-            rating.CriticsRatingsCount = rootNode.GetInt(CriticsRatingsCountXPath);
+            if (rating.CriticsRating != null)
+            {
+                rating.CriticsRatingsCount = rootNode.GetInt(CriticsRatingsCountXPath);
+            }
 
             rating.AudienceRating = rootNode.GetDouble(AudienceRatingXPath);
-            var audienceRatingsCount = rootNode.GetText(AudienceRatingsCountXPath);
-            rating.AudienceRatingsCount = Int32.Parse(audienceRatingsCount.Replace(" Ratings", ""), CultureInfo.InvariantCulture);
+            if (rating.AudienceRating != null)
+            {
+                var audienceRatingsCount = rootNode.GetText(AudienceRatingsCountXPath);
+                rating.AudienceRatingsCount = Int32.Parse(audienceRatingsCount.Replace(" Ratings", ""), CultureInfo.InvariantCulture);
+            }
 
             data.MovieRatings = new List<MovieRating>();
             data.MovieRatings.Add(rating);
